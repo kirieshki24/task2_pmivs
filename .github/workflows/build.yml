@@ -23,12 +23,13 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
       - name: Run core unit tests (JVM)
-        working-directory: task2
         run: ./gradlew :core:jvmTest --no-daemon
 
       - name: Run shared common tests (JVM)
-        working-directory: task2
         run: ./gradlew :app:shared:jvmTest --no-daemon
 
   # ── Android ────────────────────────────────────────────────────────────────
@@ -47,15 +48,17 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
       - name: Build Android APK
-        working-directory: task2
         run: ./gradlew :app:androidApp:assembleDebug --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: android-debug-apk
-          path: task2/app/androidApp/build/outputs/apk/debug/*.apk
+          path: app/androidApp/build/outputs/apk/debug/*.apk
 
   # ── Desktop (JVM / Linux) ──────────────────────────────────────────────────
   desktop:
@@ -73,15 +76,17 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
       - name: Build Desktop distribution
-        working-directory: task2
         run: ./gradlew :app:desktopApp:createReleaseDistributable --no-daemon
 
       - name: Upload Desktop artifact
         uses: actions/upload-artifact@v4
         with:
           name: desktop-distributable
-          path: task2/app/desktopApp/build/compose/binaries/main-release/app/
+          path: app/desktopApp/build/compose/binaries/main-release/app/
 
   # ── Web (JS) ───────────────────────────────────────────────────────────────
   web-js:
@@ -99,15 +104,17 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
       - name: Build Web JS
-        working-directory: task2
         run: ./gradlew :app:webApp:jsBrowserDistribution --no-daemon
 
       - name: Upload Web JS artifact
         uses: actions/upload-artifact@v4
         with:
           name: web-js-dist
-          path: task2/app/webApp/build/dist/js/productionExecutable/
+          path: app/webApp/build/dist/js/productionExecutable/
 
   # ── Web (WASM) ─────────────────────────────────────────────────────────────
   web-wasm:
@@ -125,15 +132,17 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
       - name: Build Web WASM
-        working-directory: task2
         run: ./gradlew :app:webApp:wasmJsBrowserDistribution --no-daemon
 
       - name: Upload Web WASM artifact
         uses: actions/upload-artifact@v4
         with:
           name: web-wasm-dist
-          path: task2/app/webApp/build/dist/wasmJs/productionExecutable/
+          path: app/webApp/build/dist/wasmJs/productionExecutable/
 
   # ── iOS (macOS runner) ─────────────────────────────────────────────────────
   ios:
@@ -151,12 +160,14 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
       - name: Build iOS framework
-        working-directory: task2
         run: ./gradlew :app:shared:linkDebugFrameworkIosSimulatorArm64 --no-daemon
 
       - name: Upload iOS framework
         uses: actions/upload-artifact@v4
         with:
           name: ios-framework
-          path: task2/app/shared/build/bin/iosSimulatorArm64/debugFramework/
+          path: app/shared/build/bin/iosSimulatorArm64/debugFramework/
